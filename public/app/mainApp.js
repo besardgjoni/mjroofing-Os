@@ -2,10 +2,10 @@ var app = angular.module("masterApp", []);
 
 
 app.controller("masterCtrl", function($scope, $window,$http,$location) {
-    //console.log("masterCtrl is working.");
 
-    //intitial values
-    var jsonContract = {
+
+//intitial values
+var jsonContract = {
 "cb1": false, "cb2": false, "cb3": false, "cb4": false, "cb5": false, "cb6": false, "cb7": false, "cb8": false,
 "cb9": false, "cb10": false, "cb11": false, "cb12": false, "cb13": false, "cb14": false, "cb15": false, "cb16": false,
 "cb17": false, "cb18": false, "cb19": false, "cb20": false, "cb21": false, "cb51": false, "cb52": false, "discount": "",
@@ -17,64 +17,117 @@ app.controller("masterCtrl", function($scope, $window,$http,$location) {
 
 $scope.date = new Date();
 $scope.showError = false;
+$scope.missingField = "";
 $scope.req = {};
 
-// Start Validations
-function validateEmail(email) {
-    var re = /\S+@\S+\.\S+/;
-    return re.test(email);
+
+function validate(userReq) {
+    console.log(userReq.fullName );
+
+    if (userReq.curDate ==="" || (typeof userReq.curDate === 'undefined') ) {
+        console.log("date empty name empty");
+        $scope.missingField = "Date";
+        return false;
+    }
+
+    else if (userReq.proposalNum ==="" || (typeof userReq.proposalNum === 'undefined') ) {
+        console.log("proposalNum empty");
+        $scope.missingField = "Proposal Number";
+        return false;
+    }
+
+    if (userReq.fullName =="" || (typeof userReq.fullName === 'undefined') ) {
+        console.log("full name empty");
+        $scope.missingField = "Name";
+        return false;
+    }
+
+    else if (userReq.squares ==="" || (typeof userReq.squares === 'undefined') ) {
+        console.log("squaresempty");
+        $scope.missingField = "Sqaures";
+        return false;
+    }
+
+    else if (userReq.jobAddress2 ==="" || (typeof userReq.jobAddress2 === 'undefined') ) {
+        console.log("jobAddress2 empty name empty");
+        $scope.missingField = "Address";
+        return false;
+    }
+
+    else if (userReq.subTo ==="" || (typeof userReq.subTo === 'undefined') ) {
+        console.log("email empty");
+        $scope.missingField = "Email";
+        return false;
+    }
+
+    else if (userReq.phone ==="" || (typeof userReq.phone === 'undefined') ) {
+        console.log("phone empty");
+        $scope.missingField = "Phone";
+        return false;
+    }
+
+    else if (userReq.seller ==="" || (typeof userReq.seller === 'undefined') ) {
+        console.log("seller empty");
+        $scope.missingField = "Seller";
+        return false;
+    }
+
+    else if (userReq.subTot ==="" || (typeof userReq.subTot === 'undefined') ) {
+        console.log("subtotal tax empty");
+        $scope.missingField = "Sub Total";
+        return false;
+    }
+
+    else if (userReq.saleTax ==="" || (typeof userReq.saleTax === 'undefined') ) {
+        console.log("sale tax empty");
+        $scope.missingField = "Sale Tax";
+        return false;
+    }
+
+    else {
+        return true;
+    }
+
 }
 
 
 
-
-
-
-// End validations
-
-
-
 $scope.submitReq = function (req) {
-	//console.log(req);
-	
-
+    
     var userReq = angular.copy(jsonContract); // format the user req to the contract
     userReq = angular.extend(userReq, req); // merge user req to the json contract
-    console.log(userReq);
 
 
-    // if(userReq.fullName == "" || userReq.jobAddress2 == "" 
-    //     || userReq.subTo == "" || userReq.phone == "" || userReq.proposalNum == "" ||
-    //      validateEmail(userReq.subTo) == false || userReq.subTot == "" ||
-    //      userReq.saleTax == "" || isNaN(userReq.subTot) == true || isNaN(userReq.saleTax) == true ) {
-    
-    //     $scope.showError = true;
-
-    // } else {
-       
- var config = {
-        headers : {
-            'Content-Type': 'application/json'
-        }
-    }; // end config
-
-$http.post( '/sendFormPost' , userReq, config)
-                .success(function (data, status, headers, config) {
-            console.log("POST Method Success: " );
-            console.log(data); // remove after testing
-                })
-                .error(function (data, status, header, config) {
-                     console.log("POST Method Failed: " );
-                });
+        // if(!validate(userReq)) {
+        //     $scope.showError = true;
+        //     console.log("failed");
 
 
-setTimeout(function(){ $window.location.href = '/completed'; }, 1500);
+        // } else {
+            console.log("passed");
+        console.log(userReq);
+
+             var config = {
+                    headers : {
+                        'Content-Type': 'application/json'
+                    }
+                }; // end config
+
+            $http.post( '/sendFormPost' , userReq, config)
+                            .success(function (data, status, headers, config) {
+                                console.log("POST Method Success: " );
+                                console.log(data); // remove after testing
+                            })
+                            .error(function (data, status, header, config) {
+                                 console.log("POST Method Failed: here 2" );
+                            });
 
 
-   // }
+            setTimeout(function(){ $window.location.href = '/completed'; }, 1500);
+        // }
 
+}; // end submitReq
 
-};
 
 
 
@@ -87,20 +140,10 @@ $scope.preCheck = function(tbComment) {
     else { 
 
         return true;}
-}
+} // end preCheck
 
 
-
-
-// precheck check box if the a commnet is entered
-$scope.testMe = function() {
-//console.log("R");
-
-}
-
-
-
-});
+}); // end master Controller
 
 
 
@@ -115,3 +158,7 @@ app.controller("formResultCtrl", function($scope) {
 
 
 });
+
+
+
+
