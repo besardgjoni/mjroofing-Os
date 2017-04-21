@@ -42,11 +42,11 @@ function validate(userReq) {
         return false;
     }
 
-    else if (userReq.squares ==="" || (typeof userReq.squares === 'undefined') ) {
-        console.log("squaresempty");
-        $scope.missingField = "Sqaures";
-        return false;
-    }
+    // else if (userReq.squares ==="" || (typeof userReq.squares === 'undefined') ) {
+    //     console.log("squaresempty");
+    //     $scope.missingField = "Sqaures";
+    //     return false;
+    // }
 
     else if (userReq.jobAddress2 ==="" || (typeof userReq.jobAddress2 === 'undefined') ) {
         console.log("jobAddress2 empty name empty");
@@ -98,12 +98,12 @@ $scope.submitReq = function (req) {
     userReq = angular.extend(userReq, req); // merge user req to the json contract
 
 
-        // if(!validate(userReq)) {
-        //     $scope.showError = true;
-        //     console.log("failed");
+        if(!validate(userReq)) {
+            $scope.showError = true;
+            console.log("failed");
 
 
-        // } else {
+        } else {
             console.log("passed");
         console.log(userReq);
 
@@ -124,7 +124,7 @@ $scope.submitReq = function (req) {
 
 
             setTimeout(function(){ $window.location.href = '/completed'; }, 1500);
-        // }
+        }
 
 }; // end submitReq
 
